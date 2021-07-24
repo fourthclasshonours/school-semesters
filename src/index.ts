@@ -4,6 +4,7 @@ import DigiPen from './uni/DigiPen';
 import NTU from './uni/NTU';
 import NUS from './uni/NUS';
 import SMU from './uni/SMU';
+import SUTD from './uni/SUTD';
 
 async function run() {
   const output: Record<string, App.Uni> = {
@@ -11,6 +12,7 @@ async function run() {
     NUS: NUS(),
     DigiPen: DigiPen(),
     NTU: NTU(),
+    SUTD: SUTD(),
   };
 
   fs.writeFileSync('output/output.json', JSON.stringify(output, null, 2));
