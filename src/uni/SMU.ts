@@ -83,6 +83,17 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   return { term, end: tempEnd };
 }
 
+function getVacationWeekCount(termNum: number) {
+  switch (termNum) {
+    case 1: {
+      return 6;
+    }
+    default: {
+      return 16;
+    }
+  }
+}
+
 export default function SMU() {
   const terms: App.Term[] = [];
 
@@ -104,7 +115,7 @@ export default function SMU() {
 
     // Terms
     for (let termIndex = 0; termIndex < 2; termIndex++) {
-      const vacationWeekCount = termIndex === 0 ? 6 : 16;
+      const vacationWeekCount = getVacationWeekCount(termIndex + 1);
 
       const { term, end } = generateTerm(
         start,
