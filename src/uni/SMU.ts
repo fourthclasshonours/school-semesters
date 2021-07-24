@@ -14,8 +14,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   }
 
   const periodClass1: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'class',
   };
 
@@ -26,8 +26,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd = tempEnd.clone().add(1, 'week');
 
   const periodRecess: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'recess',
   };
 
@@ -41,8 +41,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   }
 
   const periodClass2: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'class',
   };
 
@@ -53,8 +53,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd = tempEnd.clone().add(2, 'week');
 
   const periodExam: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'exam',
   };
 
@@ -68,8 +68,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   }
 
   const periodVacation: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'vacation',
   };
 

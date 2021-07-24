@@ -16,8 +16,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd = tempEnd.clone().add(5, 'days');
 
   const periodClass1: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'class',
   };
 
@@ -29,8 +29,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd.add(2, 'days');
 
   const periodReading1: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'reading',
   };
 
@@ -46,8 +46,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd = tempEnd.clone().add(5, 'days');
 
   const periodClass2: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'class',
   };
 
@@ -58,8 +58,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd = tempEnd.clone().add(1, 'week');
 
   const periodReading2: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'reading',
   };
 
@@ -71,8 +71,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd.add(1, 'days');
 
   const periodExam: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'exam',
   };
 
@@ -87,8 +87,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd.add(1, 'days');
 
   const periodVacation: App.Period = {
-    date_start: tempStart.toISOString(),
-    date_end: tempEnd.clone().toISOString(),
+    date_start: tempStart.toISOString(true),
+    date_end: tempEnd.clone().toISOString(true),
     type: 'vacation',
   };
 
