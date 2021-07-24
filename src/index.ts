@@ -4,6 +4,7 @@ import DigiPen from './uni/DigiPen';
 import NTU from './uni/NTU';
 import NUS from './uni/NUS';
 import SMU from './uni/SMU';
+import SUSS from './uni/SUSS';
 import SUTD from './uni/SUTD';
 
 async function run() {
@@ -13,6 +14,7 @@ async function run() {
     DigiPen: DigiPen(),
     NTU: NTU(),
     SUTD: SUTD(),
+    SUSS: SUSS(),
   };
 
   fs.writeFileSync('output/output.json', JSON.stringify(output, null, 2));
