@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "moment": "^2.29.1",
     "typescript": "^4.3.5"
   },
   "devDependencies": {
