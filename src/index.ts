@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-import NUS from './NUS';
-import SMU from './SMU';
+import NUS from './uni/NUS';
+import SMU from './uni/SMU';
 
 async function run() {
   const output: Record<string, App.Uni> = {
