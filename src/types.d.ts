@@ -1,5 +1,5 @@
 declare namespace App {
-  type PeriodType = 'class' | 'recess' | 'exam' | 'vacation';
+  type PeriodType = 'class' | 'recess' | 'exam' | 'reading' | 'vacation';
 
   interface Period {
     date_start: string;
