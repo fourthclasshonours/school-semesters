@@ -1,7 +1,15 @@
+import fs from 'fs';
+
+import NUS from './NUS';
 import SMU from './SMU';
 
 async function run() {
-  console.dir(SMU(), { depth: null });
+  const output: Record<string, App.Uni> = {
+    SMU: SMU(),
+    NUS: NUS(),
+  };
+
+  fs.writeFileSync('output/output.json', JSON.stringify(output, null, 2));
 }
 
 run()
