@@ -108,7 +108,7 @@ export default function NUS() {
   const currentYear = moment().year();
 
   // Generate for the next four years
-  for (let yearIndex = -1; yearIndex < 0; yearIndex++) {
+  for (let yearIndex = -1; yearIndex < 4; yearIndex++) {
     const augustMoment = moment()
       .set('year', currentYear + yearIndex)
       .set('month', 7)
