@@ -1,5 +1,6 @@
 import moment, { Moment } from 'moment';
 
+import { DATE_FORMAT } from '../constants';
 import { Day, nthDayOfMonth } from '../util';
 
 function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
@@ -14,8 +15,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   }
 
   const periodClass1: App.Period = {
-    date_start: tempStart.toISOString(true),
-    date_end: tempEnd.clone().toISOString(true),
+    date_start: tempStart.format(DATE_FORMAT),
+    date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'class',
   };
 
@@ -26,8 +27,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd = tempEnd.clone().add(1, 'week');
 
   const periodRecess: App.Period = {
-    date_start: tempStart.toISOString(true),
-    date_end: tempEnd.clone().toISOString(true),
+    date_start: tempStart.format(DATE_FORMAT),
+    date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'recess',
   };
 
@@ -41,8 +42,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   }
 
   const periodClass2: App.Period = {
-    date_start: tempStart.toISOString(true),
-    date_end: tempEnd.clone().toISOString(true),
+    date_start: tempStart.format(DATE_FORMAT),
+    date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'class',
   };
 
@@ -53,8 +54,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   tempEnd = tempEnd.clone().add(2, 'week');
 
   const periodExam: App.Period = {
-    date_start: tempStart.toISOString(true),
-    date_end: tempEnd.clone().toISOString(true),
+    date_start: tempStart.format(DATE_FORMAT),
+    date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'exam',
   };
 
@@ -68,8 +69,8 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   }
 
   const periodVacation: App.Period = {
-    date_start: tempStart.toISOString(true),
-    date_end: tempEnd.clone().toISOString(true),
+    date_start: tempStart.format(DATE_FORMAT),
+    date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'vacation',
   };
 
