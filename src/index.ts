@@ -17,7 +17,9 @@ async function run() {
     SUSS: SUSS(),
   };
 
-  fs.writeFileSync('output/output.json', JSON.stringify(output, null, 2));
+  for (const [filename, data] of Object.entries(output)) {
+    fs.writeFileSync(`output/${filename}.json`, JSON.stringify(data, null, 2));
+  }
 }
 
 run()
