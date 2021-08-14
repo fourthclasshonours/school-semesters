@@ -5,6 +5,7 @@ declare namespace App {
     date_start: string;
     date_end: string;
     type: PeriodType;
+    week_no?: number;
   }
 
   // Used to represent a term or semester
