@@ -4,18 +4,20 @@ import generateICal from './calendar/generateICal';
 import DigiPen from './uni/DigiPen';
 import NTU from './uni/NTU';
 import NUS from './uni/NUS';
+import NUSWeeks from './uni/NUSWeeks';
 import SMU from './uni/SMU';
 import SUSS from './uni/SUSS';
 import SUTD from './uni/SUTD';
 
 async function run() {
   const output: Record<string, App.Uni> = {
-    SMU: SMU(),
-    NUS: NUS(),
-    DigiPen: DigiPen(),
-    NTU: NTU(),
-    SUTD: SUTD(),
-    SUSS: SUSS(),
+    // SMU: SMU(),
+    // NUS: NUS(),
+    // DigiPen: DigiPen(),
+    // NTU: NTU(),
+    // SUTD: SUTD(),
+    // SUSS: SUSS(),
+    NUSWeeks: NUSWeeks(),
   };
 
   for (const [filename, data] of Object.entries(output)) {
