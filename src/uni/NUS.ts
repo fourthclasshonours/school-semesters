@@ -5,75 +5,74 @@ import { Day, nthDayOfMonth } from '../util';
 
 function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   const periods: App.Period[] = [];
+  let weekNo = 1;
 
   let tempStart = start.clone();
-  let tempEnd = start.clone();
+  let tempEnd = start.clone().add(1, 'week');
 
   // Term pre-recess
-  for (let weekIndex = 0; weekIndex < 5; weekIndex++) {
+  for (let weekIndex = 0; weekIndex < 6; weekIndex++) {
+    
+    const periodClass1: App.Period = {
+      date_start: tempStart.format(DATE_FORMAT),
+      date_end: tempEnd.clone().subtract(2, 'days').format(DATE_FORMAT),
+      type: 'class',
+      week_no: weekNo
+    };
+
+    weekNo += 1;
+
+    periods.push(periodClass1);
+
+    tempStart = tempStart.clone().add(1, 'week'); 
     tempEnd = tempEnd.clone().add(1, 'week');
   }
 
-  tempEnd = tempEnd.clone().add(5, 'days');
-
-  const periodClass1: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'class',
-  };
-
-  periods.push(periodClass1);
-
   // Reading 1
-  tempStart = tempEnd.clone();
-  tempEnd = tempEnd.clone().add(1, 'week');
-  tempEnd.add(2, 'days');
-
   const periodReading1: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
+    date_start: tempStart.clone().subtract(2, 'days').format(DATE_FORMAT),
     date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'reading',
   };
 
   periods.push(periodReading1);
+  tempStart = tempStart.clone().add(1, 'week');
+  tempEnd = tempEnd.clone().add(1, 'week');
 
   // Term post-recess
-  tempStart = tempEnd.clone();
+  for (let weekIndex = 0; weekIndex < 7; weekIndex++) {
+    
+    const periodClass2: App.Period = {
+      date_start: tempStart.format(DATE_FORMAT),
+      date_end: tempEnd.clone().subtract(2, 'days').format(DATE_FORMAT),
+      type: 'class',
+      week_no: weekNo
+    };
 
-  for (let weekIndex = 0; weekIndex < 6; weekIndex++) {
+    weekNo += 1;
+
+    periods.push(periodClass2);
+
+    tempStart = tempStart.clone().add(1, 'week'); 
     tempEnd = tempEnd.clone().add(1, 'week');
   }
 
-  tempEnd = tempEnd.clone().add(5, 'days');
-
-  const periodClass2: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'class',
-  };
-
-  periods.push(periodClass2);
-
   // Reading 2
-  tempStart = tempEnd.clone();
-  tempEnd = tempEnd.clone().add(1, 'week');
-
   const periodReading2: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
+    date_start: tempStart.clone().subtract(2, 'days').format(DATE_FORMAT),
+    date_end: tempEnd.clone().subtract(2, 'days').format(DATE_FORMAT),
     type: 'reading',
   };
 
   periods.push(periodReading2);
 
   // Exam
-  tempStart = tempEnd.clone();
+  tempStart = tempStart.clone().add(1, 'week'); 
   tempEnd = tempEnd.clone().add(2, 'week');
-  tempEnd.add(1, 'days');
 
   const periodExam: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
+    date_start: tempStart.clone().subtract(2, 'days').format(DATE_FORMAT),
+    date_end: tempEnd.clone().subtract(1, 'days').format(DATE_FORMAT),
     type: 'exam',
   };
 
@@ -81,19 +80,20 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
 
   // Vacation
   tempStart = tempEnd.clone();
+  tempEnd = tempEnd.clone();
 
   for (let weekIndex = 0; weekIndex < vacationWeekCount - 1; weekIndex++) {
     tempEnd = tempEnd.clone().add(1, 'week');
   }
-  tempEnd.add(1, 'days');
 
   const periodVacation: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
+    date_start: tempStart.clone().subtract(1, 'days').format(DATE_FORMAT),
     date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'vacation',
   };
 
   periods.push(periodVacation);
+
 
   const term: App.Term = {
     label,
@@ -103,7 +103,7 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   return { term, end: tempEnd };
 }
 
-export default function NUS() {
+export default function NUSWeeks() {
   const terms: App.Term[] = [];
 
   const currentYear = moment().year();
@@ -124,7 +124,7 @@ export default function NUS() {
 
     // Terms
     for (let termIndex = 0; termIndex < 2; termIndex++) {
-      const vacationWeekCount = termIndex === 0 ? 6 : 16;
+      const vacationWeekCount = termIndex === 0 ? 6 : 13;
 
       const { term, end } = generateTerm(
         start,
