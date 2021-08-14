@@ -87,10 +87,10 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
 function getVacationWeekCount(termNum: number) {
   switch (termNum) {
     case 1: {
-      return 4;
+      return 3;
     }
     default: {
-      return 3;
+      return 2;
     }
   }
 }
