@@ -10,12 +10,12 @@ import SUTD from './uni/SUTD';
 
 async function run() {
   const output: Record<string, App.Uni> = {
-    SMU: SMU(),
+    // SMU: SMU(),
     NUS: NUS(),
-    DigiPen: DigiPen(),
-    NTU: NTU(),
-    SUTD: SUTD(),
-    SUSS: SUSS(),
+    // DigiPen: DigiPen(),
+    // NTU: NTU(),
+    // SUTD: SUTD(),
+    // SUSS: SUSS(),
   };
 
   for (const [filename, data] of Object.entries(output)) {
