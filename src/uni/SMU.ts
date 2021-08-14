@@ -7,8 +7,8 @@ function generateWeek(
   start: Moment,
   end: Moment,
   weekNo: number,
-  type: App.PeriodType,
-): App.Period{
+  type: App.PeriodType
+): App.Period {
   return {
     date_start: start.format(DATE_FORMAT),
     date_end: end.clone().format(DATE_FORMAT),
