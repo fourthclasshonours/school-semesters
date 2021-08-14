@@ -105,7 +105,7 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   return { term, end: tempEnd };
 }
 
-export default function NUSWeeks() {
+export default function NUS() {
   const terms: App.Term[] = [];
 
   const currentYear = moment().year();
