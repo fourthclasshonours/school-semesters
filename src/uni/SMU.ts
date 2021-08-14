@@ -3,24 +3,56 @@ import moment, { Moment } from 'moment';
 import { DATE_FORMAT } from '../constants';
 import { Day, nthDayOfMonth } from '../util';
 
+function generateWeek(
+  start: Moment,
+  end: Moment,
+  weekNo: number,
+  type: App.PeriodType
+): App.Period {
+  return {
+    date_start: start.format(DATE_FORMAT),
+    date_end: end.clone().format(DATE_FORMAT),
+    type: type,
+    week_no: weekNo,
+  };
+}
+
+function generateInstrWeek(
+  start: Moment,
+  end: Moment,
+  weekNo: number
+): App.Period {
+  return generateWeek(start, end, weekNo, 'class');
+}
+
+function generateExamWeek(
+  start: Moment,
+  end: Moment,
+  weekNo: number
+): App.Period {
+  return generateWeek(start, end, weekNo, 'exam');
+}
+
 function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
-  const periods: App.Period[] = [];
-
-  let tempStart = start.clone();
-  let tempEnd = start.clone();
-
-  // Term pre-recess
-  for (let weekIndex = 0; weekIndex < 7; weekIndex++) {
-    tempEnd = tempEnd.clone().add(1, 'week');
+  if (start.weekday() !== 1) {
+    throw new Error('Start date given does not fall on a Monday.');
   }
 
-  const periodClass1: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'class',
-  };
+  // Initialize the looping process from a week ago so that each individual sections can start from the correct starting date
+  // Outer scope tempStart and tempEnd should both start on Mondays and they should be a week apart.
+  let tempStart = start.clone().subtract(1, 'week');
+  let tempEnd = start.clone();
 
-  periods.push(periodClass1);
+  const periods: App.Period[] = [];
+
+  let weekNo = 1;
+
+  // Term pre-recess
+  for (weekNo; weekNo < 8; weekNo++) {
+    tempStart = tempStart.clone().add(1, 'week');
+    tempEnd = tempEnd.clone().add(1, 'week');
+    periods.push(generateInstrWeek(tempStart, tempEnd, weekNo));
+  }
 
   // Recess
   tempStart = tempEnd.clone();
@@ -30,43 +62,29 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
     date_start: tempStart.format(DATE_FORMAT),
     date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'recess',
+    week_no: weekNo,
   };
 
   periods.push(periodRecess);
+  weekNo += 1;
 
   // Term post-recess
-  tempStart = tempEnd.clone();
-
-  for (let weekIndex = 0; weekIndex < 6; weekIndex++) {
+  for (weekNo; weekNo < 15; weekNo++) {
+    tempStart = tempStart.clone().add(1, 'week');
     tempEnd = tempEnd.clone().add(1, 'week');
+    periods.push(generateInstrWeek(tempStart, tempEnd, weekNo));
   }
 
-  const periodClass2: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'class',
-  };
-
-  periods.push(periodClass2);
-
   // Exam
-  tempStart = tempEnd.clone();
-  tempEnd = tempEnd.clone().add(2, 'week');
-
-  const periodExam: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'exam',
-  };
-
-  periods.push(periodExam);
+  for (weekNo; weekNo < 17; weekNo++) {
+    tempStart = tempStart.clone().add(1, 'week');
+    tempEnd = tempEnd.clone().add(1, 'week');
+    periods.push(generateExamWeek(tempStart, tempEnd, weekNo));
+  }
 
   // Vacation
   tempStart = tempEnd.clone();
-
-  for (let weekIndex = 0; weekIndex < vacationWeekCount - 1; weekIndex++) {
-    tempEnd = tempEnd.clone().add(1, 'week');
-  }
+  tempEnd = tempEnd.clone().add(vacationWeekCount, 'week');
 
   const periodVacation: App.Period = {
     date_start: tempStart.format(DATE_FORMAT),
@@ -87,10 +105,10 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
 function getVacationWeekCount(termNum: number) {
   switch (termNum) {
     case 1: {
-      return 6;
+      return 5;
     }
     default: {
-      return 16;
+      return 15;
     }
   }
 }

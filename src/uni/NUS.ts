@@ -3,77 +3,83 @@ import moment, { Moment } from 'moment';
 import { DATE_FORMAT } from '../constants';
 import { Day, nthDayOfMonth } from '../util';
 
-function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
-  const periods: App.Period[] = [];
+function generateInstrWeek(
+  start: Moment,
+  end: Moment,
+  weekNo: number
+): App.Period {
+  return {
+    date_start: start.format(DATE_FORMAT),
+    date_end: end.clone().subtract(2, 'days').format(DATE_FORMAT),
+    type: 'class',
+    week_no: weekNo,
+  };
+}
 
-  let tempStart = start.clone();
+function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
+  if (start.weekday() !== 1) {
+    throw new Error('Start date given does not fall on a Monday.');
+  }
+
+  // Initialize the looping process from a week ago so that each individual sections can start from the correct starting date
+  // Outer scope tempStart and tempEnd should both start on Mondays and they should be a week apart.
+  let tempStart = start.clone().subtract(1, 'week');
   let tempEnd = start.clone();
 
+  const periods: App.Period[] = [];
+  let weekNo = 1;
+
   // Term pre-recess
-  for (let weekIndex = 0; weekIndex < 5; weekIndex++) {
+  for (weekNo; weekNo < 7; weekNo++) {
+    tempStart = tempStart.clone().add(1, 'week');
     tempEnd = tempEnd.clone().add(1, 'week');
+    periods.push(generateInstrWeek(tempStart, tempEnd, weekNo));
   }
 
-  tempEnd = tempEnd.clone().add(5, 'days');
-
-  const periodClass1: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'class',
-  };
-
-  periods.push(periodClass1);
-
-  // Reading 1
+  // Recess
+  // Recess week is from prev Sat to Sun
+  // e.g. Sat, 18 Sep 2021 to Sun, 26 Sep 2021
   tempStart = tempEnd.clone();
   tempEnd = tempEnd.clone().add(1, 'week');
-  tempEnd.add(2, 'days');
 
-  const periodReading1: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
+  const periodRecess: App.Period = {
+    date_start: tempStart.clone().subtract(2, 'days').format(DATE_FORMAT),
     date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'reading',
+    type: 'recess',
   };
 
-  periods.push(periodReading1);
+  periods.push(periodRecess);
 
   // Term post-recess
-  tempStart = tempEnd.clone();
-
-  for (let weekIndex = 0; weekIndex < 6; weekIndex++) {
+  for (weekNo; weekNo < 14; weekNo++) {
+    tempStart = tempStart.clone().add(1, 'week');
     tempEnd = tempEnd.clone().add(1, 'week');
+    periods.push(generateInstrWeek(tempStart, tempEnd, weekNo));
   }
 
-  tempEnd = tempEnd.clone().add(5, 'days');
-
-  const periodClass2: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
-    type: 'class',
-  };
-
-  periods.push(periodClass2);
-
-  // Reading 2
+  // Reading
+  // Reading week is from prev Sat to Fri
+  // e.g. Sat, 13 Nov 2021 to Fri, 19 Nov 2021
   tempStart = tempEnd.clone();
   tempEnd = tempEnd.clone().add(1, 'week');
 
-  const periodReading2: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
+  const periodReading: App.Period = {
+    date_start: tempStart.clone().subtract(2, 'days').format(DATE_FORMAT),
+    date_end: tempEnd.clone().subtract(2, 'days').format(DATE_FORMAT),
     type: 'reading',
   };
 
-  periods.push(periodReading2);
+  periods.push(periodReading);
 
   // Exam
+  // Exam week is from prev Sat to the Sat 2 weeks after.
+  // e.g. Sat, 20 Nov 2021 to Sat, 4 Dec 2021
   tempStart = tempEnd.clone();
   tempEnd = tempEnd.clone().add(2, 'week');
-  tempEnd.add(1, 'days');
 
   const periodExam: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
-    date_end: tempEnd.clone().format(DATE_FORMAT),
+    date_start: tempStart.clone().subtract(2, 'days').format(DATE_FORMAT),
+    date_end: tempEnd.clone().subtract(1, 'days').format(DATE_FORMAT),
     type: 'exam',
   };
 
@@ -81,14 +87,10 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
 
   // Vacation
   tempStart = tempEnd.clone();
-
-  for (let weekIndex = 0; weekIndex < vacationWeekCount - 1; weekIndex++) {
-    tempEnd = tempEnd.clone().add(1, 'week');
-  }
-  tempEnd.add(1, 'days');
+  tempEnd = tempEnd.clone().add(vacationWeekCount, 'week');
 
   const periodVacation: App.Period = {
-    date_start: tempStart.format(DATE_FORMAT),
+    date_start: tempStart.clone().subtract(1, 'days').format(DATE_FORMAT),
     date_end: tempEnd.clone().format(DATE_FORMAT),
     type: 'vacation',
   };
@@ -124,7 +126,7 @@ export default function NUS() {
 
     // Terms
     for (let termIndex = 0; termIndex < 2; termIndex++) {
-      const vacationWeekCount = termIndex === 0 ? 6 : 16;
+      const vacationWeekCount = termIndex === 0 ? 5 : 12;
 
       const { term, end } = generateTerm(
         start,
