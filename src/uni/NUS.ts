@@ -12,19 +12,18 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
 
   // Term pre-recess
   for (let weekIndex = 0; weekIndex < 6; weekIndex++) {
-    
     const periodClass1: App.Period = {
       date_start: tempStart.format(DATE_FORMAT),
       date_end: tempEnd.clone().subtract(2, 'days').format(DATE_FORMAT),
       type: 'class',
-      week_no: weekNo
+      week_no: weekNo,
     };
 
     weekNo += 1;
 
     periods.push(periodClass1);
 
-    tempStart = tempStart.clone().add(1, 'week'); 
+    tempStart = tempStart.clone().add(1, 'week');
     tempEnd = tempEnd.clone().add(1, 'week');
   }
 
@@ -41,19 +40,18 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
 
   // Term post-recess
   for (let weekIndex = 0; weekIndex < 7; weekIndex++) {
-    
     const periodClass2: App.Period = {
       date_start: tempStart.format(DATE_FORMAT),
       date_end: tempEnd.clone().subtract(2, 'days').format(DATE_FORMAT),
       type: 'class',
-      week_no: weekNo
+      week_no: weekNo,
     };
 
     weekNo += 1;
 
     periods.push(periodClass2);
 
-    tempStart = tempStart.clone().add(1, 'week'); 
+    tempStart = tempStart.clone().add(1, 'week');
     tempEnd = tempEnd.clone().add(1, 'week');
   }
 
@@ -67,7 +65,7 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   periods.push(periodReading2);
 
   // Exam
-  tempStart = tempStart.clone().add(1, 'week'); 
+  tempStart = tempStart.clone().add(1, 'week');
   tempEnd = tempEnd.clone().add(2, 'week');
 
   const periodExam: App.Period = {
@@ -93,7 +91,6 @@ function generateTerm(start: Moment, label: string, vacationWeekCount: number) {
   };
 
   periods.push(periodVacation);
-
 
   const term: App.Term = {
     label,
